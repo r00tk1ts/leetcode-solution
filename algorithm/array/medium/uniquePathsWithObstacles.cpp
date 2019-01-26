@@ -51,6 +51,38 @@ public:
             return 0;
         }
     }
+
+    int uniquePathsWithObstacles2(vector<vector<int>>& obstacleGrid){
+        if(obstacleGrid.empty() || obstacleGrid[0][0] == 1)
+            return 0;
+        if(obstacleGrid.size() == 1 && obstacleGrid[0].size() == 1){
+            return (obstacleGrid[0][0] == 1 ? 0 : 1);
+        }
+        // dynamic programming
+        // init
+        vector<vector<int>> dp(obstacleGrid.size(), {});
+        for(int i=0;i<dp.size();++i){
+            for(int j=0;j<obstacleGrid[0].size();++j){
+                if(obstacleGrid[i][j] == 1){
+                    dp[i].push_back(-1);
+                }else{
+                    dp[i].push_back(0);
+                }
+            }
+        }    
+        dp[0][0] = 1;
+        for(int i=0;i<dp.size();++i){
+            for(int j=0;j<dp[0].size();++j){
+                if(dp[i][j] == -1)
+                    continue;
+                if(i-1>=0 && dp[i-1][j] > 0)
+                    dp[i][j] += dp[i-1][j];
+                if(j-1>=0 && dp[i][j-1] > 0)
+                    dp[i][j] += dp[i][j-1];
+            }
+        }
+        return dp.back().back() == -1 ? 0 : dp.back().back();
+    }
 };
 
 int main(){

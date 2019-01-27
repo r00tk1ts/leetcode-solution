@@ -9,7 +9,14 @@ public:
     bool search(vector<int>& nums, int target){
         int begin = 0, end = nums.size()-1;
         while(begin <= end){
-            int mid = begin + (end - begin) / 2;
+            if(nums[begin] < nums[end] && (target < nums[begin] || target > nums[end]))
+                return false;
+            
+            // skip duplicates
+            while(begin < end && nums[begin] == nums[end])
+                ++begin;
+            
+            int mid = (begin + end) / 2;
             if(target == nums[mid])
                 return true;
             else if(nums[mid] >= nums[begin]){

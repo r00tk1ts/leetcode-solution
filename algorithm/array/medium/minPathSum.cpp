@@ -5,7 +5,7 @@ using namespace std;
 
 class Solution{
 public:
-    int minPathSum(vector<vector<int>> &grid){
+    int minPathSum2(vector<vector<int>> &grid){
         if(grid.empty())
             return 0;
         int n = grid.size();
@@ -35,11 +35,47 @@ public:
             helper(grid, right, down-1, temp+grid[n-down-1][m-right-1], sum);
         }
     }
+
+    // dynamic programming
+    int minPathSum(vector<vector<int>>& triangle){
+        if(triangle.empty())
+            return 0;
+        vector<vector<int>> dp(triangle.size());
+        for(int i=0;i<dp.size();++i){
+            for(int j=0;j<=i;++j){
+                dp[i].push_back(0);
+            }
+        }
+        
+        dp[0][0] = triangle[0][0];
+        for(int i=1;i<dp.size();++i){
+            for(int j=0;j<dp[i].size();++j){
+                if(j-1 >= 0 && j < dp[i-1].size()){
+                    dp[i][j] = min(dp[i-1][j], dp[i-1][j-1]) + triangle[i][j];
+                }else{
+                    dp[i][j] = dp[i-1][j] + triangle[i][j];
+                }
+            }
+        }
+        
+        for(int i=0;i<dp.size();++i){
+            for(int j=0;j<dp[i].size();++j){
+                cout << dp[i][j] << "\t";
+            }
+            cout << endl;
+        }
+        
+        int temp = dp.back()[0];
+        for(auto elem : dp.back())
+            if(elem < temp)
+                temp = elem;
+        return temp;
+    }
 };
 
 int main()
 {
-    vector<vector<int>> v{{1,2,3},{4,5,6}};
+    vector<vector<int>> v{{1,2,5},{3,2,1}};
     vector<vector<int>> v2{{1,3,1,2},{1,5,1,7},{4,2,1,1}};
     Solution s;
     cout << s.minPathSum(v) << endl;

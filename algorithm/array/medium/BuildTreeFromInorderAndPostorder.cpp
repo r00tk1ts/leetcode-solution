@@ -26,7 +26,7 @@ public:
             return nullptr;
         
         int index = inorder_map.at(postorder[post_s]);
-        int right_tree_size = postorder.size() - index - 1;
+        int right_tree_size = post_s - post_e - index + in_s - 1;
         TreeNode *node = new TreeNode(postorder[post_s]);
         node->left = helper(postorder, post_s-right_tree_size-1, post_e, inorder, in_s, index, inorder_map);
         node->right = helper(postorder, post_s-1, post_s-right_tree_size-1, inorder, index+1, in_e, inorder_map);
@@ -44,8 +44,8 @@ public:
 
 int main()
 {
-    vector<int> postorder = {9,15,7,20,3};
     vector<int> inorder = {9,3,15,20,7};
+    vector<int> postorder = {9,15,7,20,3};
 
     Solution s;
     TreeNode *root = s.buildTree(postorder, inorder);

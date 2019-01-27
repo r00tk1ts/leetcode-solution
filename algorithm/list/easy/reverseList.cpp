@@ -14,6 +14,8 @@ public:
         ListNode dummy(0);
         dummy.next = head;
         ListNode *tail = head;
+        if(tail == nullptr)
+            return head;
         ListNode *curr = head->next;
         while(curr != nullptr){
             tail->next = curr->next;
@@ -26,7 +28,7 @@ public:
     }
 
     ListNode *reverseList2(ListNode *head){
-        if(head->next == nullptr){
+        if(head == nullptr || head->next == nullptr){
             return head;
         }
         ListNode *dummy = reverseList2(head->next);

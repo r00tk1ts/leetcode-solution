@@ -34,7 +34,7 @@ public:
     }
 
     ListNode *reverseList(ListNode *head){
-        if(head->next == nullptr){
+        if(head == nullptr || head->next == nullptr){
             return head;
         }
         ListNode *dummy = reverseList(head->next);

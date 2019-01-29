@@ -19,9 +19,9 @@ public:
 		ListNode *tail = nullptr;
 		while (curr){
 			ListNode *prev = dummy.next, *pprev = &dummy;
+			if (tail == nullptr)
+				tail = prev;
 			while (prev != curr){
-				if (tail == nullptr)
-					tail = prev;
 				if (prev->val > curr->val){
 					auto tmp = curr->next;
 					pprev->next = curr;
@@ -33,17 +33,15 @@ public:
 				else{
 					pprev = prev;
 					prev = prev->next;
-					if (tail->next != curr)
-						tail = tail->next;
 				}
 			}
-			if (prev == curr)
+			if (prev == curr){
+				tail = curr;
 				curr = curr->next;
+			}
 		}
 		return dummy.next;
 	}
-
-
 };
 
 int main()

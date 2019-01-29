@@ -3,15 +3,18 @@
 using namespace std;
 
 struct ListNode{
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(nullptr){}
+	int val;
+	ListNode *next;
+	ListNode(int x) : val(x), next(nullptr){}
 };
 
 class Solution{
 public:
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2){
-        ListNode *p1 = l1, *p2 = l2;
+	ListNode *addTwoNumbers(ListNode *l1, ListNode *l2){
+		l1 = reverseList(l1);
+		l2 = reverseList(l2);
+
+		ListNode *p1 = l1, *p2 = l2;
         ListNode *dummy = new ListNode(-1);
         ListNode *head = dummy;
         int len1 = 0, len2 = 0;
@@ -67,26 +70,44 @@ public:
         if(carry == 1)
             head->next = new ListNode(1);
 
-        return dummy->next;
+        return reverseList(dummy->next);
+	}
+
+	ListNode *reverseList(ListNode *head){
+        ListNode dummy(0);
+        dummy.next = head;
+        ListNode *tail = head;
+        if(tail == nullptr)
+            return head;
+        ListNode *curr = head->next;
+        while(curr != nullptr){
+            tail->next = curr->next;
+            auto tmp = dummy.next;
+            dummy.next = curr;
+            curr->next = tmp;
+            curr = tail->next;
+        }
+        return dummy.next;
     }
 };
 
 int main()
 {
-    ListNode *l1 = new ListNode(2);
-    l1->next = new ListNode(4);
-    l1->next->next = new ListNode(3);
+	ListNode *l1 = new ListNode(8);
+	l1->next = new ListNode(9);
+	l1->next->next = new ListNode(9);
+	//l1->next->next->next = new ListNode(3);
 
-    ListNode *l2 = new ListNode(5);
-    l2->next = new ListNode(6);
-    l2->next->next = new ListNode(4);
-    l2->next->next->next = new ListNode(8);
+	ListNode *l2 = new ListNode(2);
+	//l2->next = new ListNode(6);
+	//l2->next->next = new ListNode(4);
 
-    Solution s;
-    auto ret = s.addTwoNumbers(l1, l2);
-    while(ret){
-        cout << ret->val << "\t";
-        ret = ret->next;
-    }
-    return 0;
+	Solution s;
+	auto ret = s.addTwoNumbers(l1, l2);
+	while (ret){
+		cout << ret->val << "\t";
+		ret = ret->next;
+	}
+	cout << endl;
+	return 0;
 }
